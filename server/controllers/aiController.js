@@ -12,7 +12,7 @@ export const aiController = async (req, res) => {
       return res.status(404).json({ Error: botReply.Error });
     }
 
-    res.status(200).json({ result: botReply.result, Model_Name: aiConfig.gemini.textOnlyModel });
+    res.status(200).json({ result: botReply.result });
   } else if (modelType === "text_and_image") {
     const botReply = await textAndImage(req.body.prompt, req.body.imageParts);
 
@@ -20,7 +20,7 @@ export const aiController = async (req, res) => {
       return res.status(404).json({ Error: botReply.Error });
     }
 
-    res.status(200).json({ result: botReply.result, Model_Name: aiConfig.gemini.textAndImageModel });
+    res.status(200).json({ result: botReply.result });
   } else {
     res.status(404).json({ result: "Invalid Model Selected" });
   }
