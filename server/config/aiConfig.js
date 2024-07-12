@@ -5,7 +5,7 @@ export const aiConfig = {
   // These Gemini models are updated upto September 2021
   gemini: {
     textOnlyModel: "gemini-1.5-flash",
-    textAndImageModel: "gemini-1.5-flash",
+    textAndImageModel: "gemini-pro-vision",
     apiKey: process.env.GEMINI_API_KEY,
 
     // Gemini Safety Settings
