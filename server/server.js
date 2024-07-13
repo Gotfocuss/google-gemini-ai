@@ -7,7 +7,17 @@ import { appConfig } from "./config/appConfig.js";
 //import { aiConfig } from "./config/aiConfig.js";
 import { aiController } from "./controllers/aiController.js";
 
+import path from "path"
+import { fileURLToPath } from 'url';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+const publicPath = path.join(__dirname, 'public');
+
 const app = express();
+
+app.use(express.static(publicPath));
 app.use(
   cors({
     origin: appConfig.corsConfig.origin,
@@ -21,7 +31,7 @@ const PORT = process.env.PORT;
 //const ASKk = process.env.GEMINI_API_KEY;
 
 // Get Gemini API Response
-app.post("/chat-with-gemini", aiController);
+app.post("/test", aiController);
 
 // App listening
 app.listen(PORT, () => {
