@@ -1,6 +1,10 @@
 
 import express from "express";
 import session from 'express-session';
+
+/*import Redis from 'ioredis';
+import connectRedis from 'connect-redis';*/
+
 import bodyParser from "body-parser";
 import cors from "cors";
 import fetch from 'node-fetch';
@@ -35,7 +39,7 @@ app.use(session({
   saveUninitialized: true,
   cookie: {
     secure: isProduction, // Set secure cookies in production
-    maxAge: 60000 // Example cookie expiration time (1 minute)
+    maxAge: 120000 // Example cookie expiration time (1 minute)
   }
 }));
 
@@ -93,7 +97,8 @@ const PORT = process.env.PORT;
 app.get('/login', (req, res) => {
   //res.sendFile("/login.html", { root: __dirname });
   const result = { Result: null };
-  res.render('login', { result });
+  const Authenticated_User = req.session.LoginActive;
+  res.render('login', { result, Authenticated_User });
 
 });
 
