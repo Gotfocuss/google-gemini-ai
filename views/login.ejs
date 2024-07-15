@@ -35,28 +35,32 @@
                         </div>
                         <% } %>
 
-                            <p>Your Welcome <%= Authenticated_User.name %>
-                                    Email: <%= Authenticated_User.email%>
-                            </p>
+                            <% if (result.Result) { %>
+                                <p>Your Welcome <%= Authenticated_User.name %>
+                                        Email: <%= Authenticated_User.email%>
+                                </p>
+                                <% } %>
 
-                            <div class="form-outline mb-4">
-                                <label class="form-label" for="form3Example3">Email address</label>
-                                <input type="email" id="form3Example3" name="email" class="form-control" required />
-                            </div>
+                                    <div class="form-outline mb-4">
+                                        <label class="form-label" for="form3Example3">Email address</label>
+                                        <input type="email" id="form3Example3" name="email" class="form-control"
+                                            required />
+                                    </div>
 
-                            <div class="form-outline mb-4">
-                                <label class="form-label" for="for_image_input">Password <br>(Choose An Image Dont
-                                    Upload
-                                    Sensitive
-                                    Data)</label>
-                                <input type="file" id="for_image_input" name="image_psd" accept="image/*"
-                                    class="form-control" required>
+                                    <div class="form-outline mb-4">
+                                        <label class="form-label" for="for_image_input">Password <br>(Choose An Image
+                                            Dont
+                                            Upload
+                                            Sensitive
+                                            Data)</label>
+                                        <input type="file" id="for_image_input" name="image_psd" accept="image/*"
+                                            class="form-control" required>
 
-                            </div>
+                                    </div>
 
-                            <button type="submit" class="btn btn-primary btn-block mb-4">
-                                Login
-                            </button>
+                                    <button type="submit" class="btn btn-primary btn-block mb-4">
+                                        Login
+                                    </button>
                 </form>
 
 
