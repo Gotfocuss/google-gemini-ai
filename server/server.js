@@ -1,5 +1,6 @@
 
 import express from "express";
+import session from 'express-session';
 import bodyParser from "body-parser";
 import cors from "cors";
 import fetch from 'node-fetch';
@@ -23,14 +24,37 @@ const publicPath = path.join(__dirname, 'public');
 
 const app = express();
 app.set('view engine', 'ejs');
-/*const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    cb(null, 'uploads_my/'); // Replace 'uploads/' with your desired upload directory
-  },
-  filename: (req, file, cb) => {
-    cb(null, Date.now() + '-' + file.originalname);
+
+// Determine if the application is running in production
+const isProduction = process.env.NODE_ENV === 'production';
+
+// Set up session middleware
+app.use(session({
+  secret: process.env.SESSION_SECRET,
+  resave: false,
+  saveUninitialized: true,
+  cookie: {
+    secure: isProduction, // Set secure cookies in production
+    maxAge: 60000 // Example cookie expiration time (1 minute)
   }
-});*/
+}));
+
+
+// Middleware to check if the user is logged in
+const checkLogin = (req, res, next) => {
+  if (req.session.LoginActive) {
+    return next();
+  }
+  res.redirect('/login');
+};
+
+// Middleware to check for 'LoginActive' session key
+app.use((req, res, next) => {
+  if (req.session.LoginActive) {
+    return res.redirect('/dashboard');
+  }
+  next();
+});
 
 // Multer storage configuration (adjust as needed)
 const storage = multer.diskStorage({});
@@ -73,6 +97,12 @@ app.get('/login', (req, res) => {
 
 });
 
+// Another route that should trigger the redirect if logged in
+app.get('/dashboard', checkLogin, (req, res) => {
+  const Authenticated_User = req.session.LoginActive;
+  res.render('dashboard', { Authenticated_User });
+});
+
 
 // Route to handle file upload
 app.post('/login', file_uploader.single('image_psd'), async (req, res) => {
@@ -105,6 +135,7 @@ app.post('/login', file_uploader.single('image_psd'), async (req, res) => {
 
     result.Result = 'success';
     result.message = data.message;
+    req.session.LoginActive = { email: data.Authenticated_User.email, name: data.Authenticated_User.name };
     res.render('login', { result });
   }
   catch (error) {
